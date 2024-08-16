@@ -1,20 +1,23 @@
 package ru.netolohy
 
 fun main() {
-    // сумма перевода в рублях
-    val amount = 10_000
-    // сцмма перевода в копейках
-    val naturalAmount = amount * 100
-    // размер комиссии 0,75%
-    val commissionSize = 0.0075
-    // размер минимальной комиссии 35р в копейках
-    val minCommission = 3500
-    // вычисляем размер комиссии в рублях
-    val commission =
-        if ((naturalAmount * commissionSize) > minCommission) {
-            (naturalAmount * commissionSize)/100
-        } else {
-            minCommission/100
+
+    fun commission(amount : Int, amountOfTransfer : Int, cardType : String) : Int {
+        return when (cardType) {
+            "Mastercard" -> {
+                (if (amountOfTransfer > 75000) ((amount * 0.006) + 20).toInt()
+                else 0)
+            }
+            "Visa" -> {
+                (if (amount * 0.0075 < 35) 35
+                else (amount * 0.0075).toInt())
+            }
+            else -> 0
         }
-    println("размер комиссии составит : $commission рублей");
+    }
+
+    println("размер комиссии составит : ${commission(100000, 100000, "Mastercard")} рублей");
+    println("размер комиссии составит : ${commission(100000, 100000, "Visa")} рублей");
+    println("размер комиссии составит : ${commission(100000, 100000, "")} рублей");
+
 }
